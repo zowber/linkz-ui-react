@@ -13,13 +13,13 @@ class Linkz extends Component {
   _getLinkz() {  
     return this.state.linkz.map((link) => {
       return(
-          <Link
-            key={link._id}
-            id={link._id}
-            name={link.name}
-            url={link.url}
-            created={link.Created_date}
-            onDelete={this._deleteLink.bind(this)} />
+        <Link
+          key={link._id}
+          id={link._id}
+          name={link.name}
+          url={link.url}
+          created={link.Created_date}
+          onDelete={this._deleteLink.bind(this)} />
       );
     });  
   }
@@ -72,11 +72,11 @@ class Linkz extends Component {
 class LinkForm extends Component {
   render() {
     return (
-        <form className="link-form" onSubmit={this._handleSubmit.bind(this)}>
-          <input type="text" id="url" name="url" placeholder="URL" ref={(url) => this._url = url} />
-          <input type="text" id="name" name="name" placeholder="Name" ref={(name) => this._name = name }/>
-          <button type="submit">Add link</button>
-        </form>
+      <form className="link-form" onSubmit={this._handleSubmit.bind(this)}>
+        <input type="text" id="url" name="url" placeholder="URL" ref={(url) => this._url = url} />
+        <input type="text" id="name" name="name" placeholder="Name" ref={(name) => this._name = name }/>
+        <button type="submit">Add link</button>
+      </form>
     );
   }
 
