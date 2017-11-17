@@ -1,4 +1,12 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files.
+### Emacs ###
+# -*- mode: gitignore; -*-
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
 
 # dependencies
 /node_modules
