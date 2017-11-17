@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import jQuery from 'jquery';
 
-class App extends Component {
-  render() {
-    return (
-      <LinkzList/>
-    );
-  }
-}
-
-class LinkzList extends Component {
+class Linkz extends Component {
 
   constructor() {
     super();
@@ -118,4 +110,4 @@ class Link extends Component {
   }
 }
 
-export default App;
+export default Linkz;
