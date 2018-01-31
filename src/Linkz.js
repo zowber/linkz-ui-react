@@ -82,12 +82,11 @@ class LinkForm extends Component {
   handleSubmit = () => {
     const { url, name } = this.state
     this.props.onAddLink(url, name);
-    this.setState({ url: '', name: '' })
+    this.setState({ url: '', name: '' });
   }
 
   render() {
-    console.log(this.state);
-    const { url, name } = this.state
+    const { url, name } = this.state;
 
     return (
       <Form onSubmit={this.handleSubmit}>
