@@ -1,41 +1,24 @@
 import React, { Component } from 'react';
 import jQuery from 'jquery';
-import { Container, Segment, Divider, Header, Form, Item, Button} from 'semantic-ui-react'
+import { Container, Segment, Header, Form, Item, Button} from 'semantic-ui-react'
 
 class Linkz extends Component {
 
-  constructor() {
-    super();
-    this.state = {
-      linkz: []
-    };
-  }
+  state = {
+    linkz: []
+  };
 
   componentWillMount() {
     jQuery.ajax({
       url: "http://192.168.1.127:3000/linkz",
       type: "get",
       success: (res) => {
-        this.setState({ linkz: res.reverse() })
+        this.setState({ linkz: res });
       }
     });
   }
-  
-  _getLinkz() {  
-    return this.state.linkz.map((link) => {
-      return(
-          <Link
-            key={link._id}
-            id={link._id}
-            name={link.name}
-            url={link.url}
-            created={link.Created_date}
-            onDelete={this._deleteLink.bind(this)} />
-      );
-    });  
-  }
 
-  _addLink (url, name) {
+  handleAddLink = (url, name) => {
     const link = {
       url,
       name
@@ -45,12 +28,12 @@ class Linkz extends Component {
       type: "post",
       data: link,
       success: (res) => {
-        this.setState({ linkz: this.state.linkz.concat([res]) });
+        this.setState({ linkz: this.state.linkz.concat([res]).reverse() });
       }
     });
   }
 
-  _deleteLink(id) {
+  handleDeleteLink = (id) => {
     jQuery.ajax({
       url: "http://192.168.1.127:3000/linkz/" + id,
       type: "delete",
@@ -59,7 +42,19 @@ class Linkz extends Component {
   }
   
   render() {
-    const linkz = this._getLinkz();
+    const linkz = this.state.linkz.reverse();
+    const linkComponents = linkz.map((link) => {
+      return (
+        <Link
+          key={link._id}
+          id={link._id}
+          name={link.name}
+          url={link.url}
+          created={link.Created_date}
+          onDeleteLink={this.handleDeleteLink}
+        />
+      );
+    }); 
 
     var headerStyle = { marginTop: '2em', marginBottom: '1em' }
 
@@ -67,11 +62,11 @@ class Linkz extends Component {
       <Container>
         <Header as='h1' textAlign='center' style={headerStyle}>Linkz</Header>
         <Segment>
-          <LinkForm addLink={this._addLink.bind(this)} />
+          <LinkForm onAddLink={this.handleAddLink} />
         </Segment>
         <Segment>
           <Item.Group divided>
-            {linkz}
+            {linkComponents}
           </Item.Group>
         </Segment>
       </Container>
@@ -80,17 +75,18 @@ class Linkz extends Component {
 }
 
 class LinkForm extends Component {
-  state = { url: '', name: '' }
+  state = { url: '', name: '' };
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
   handleSubmit = () => {
     const { url, name } = this.state
-    this.props.addLink(url, name);
+    this.props.onAddLink(url, name);
     this.setState({ url: '', name: '' })
   }
 
   render() {
+    console.log(this.state);
     const { url, name } = this.state
 
     return (
@@ -107,7 +103,7 @@ class LinkForm extends Component {
 
 class Link extends Component {
   handleDelete = () => {
-    this.props.onDelete(this.props.id);
+    this.props.onDeleteLink(this.props.id);
   }
 
   render() {
@@ -116,10 +112,17 @@ class Link extends Component {
         <Item.Content>
           <Item.Header>{this.props.name}</Item.Header>
           <Item.Meta>
-            <span><a href={this.props.url}>{this.props.url}</a></span>
+            <span>
+              <a href={this.props.url}>
+                {this.props.url}
+              </a>
+            </span>
           </Item.Meta>
           <Item.Extra>
-            <Button floated='right' onClick={this.handleDelete}>Delete</Button>
+            <Button
+              floated='right'
+              onClick={this.handleDelete}>Delete
+            </Button>
           </Item.Extra>
         </Item.Content>
       </Item>
