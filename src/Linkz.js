@@ -1,48 +1,94 @@
 import React, { Component } from 'react';
-import jQuery from 'jquery';
 import { Container, Segment, Header, Form, Item, Button} from 'semantic-ui-react'
 
 class Linkz extends Component {
 
   state = {
     linkz: []
-  };
+  }
 
   componentWillMount() {
-    jQuery.ajax({
-      url: "http://192.168.1.127:3000/linkz",
-      type: "get",
-      success: (res) => {
-        this.setState({ linkz: res });
-      }
-    });
+    this.getLinkzFromServer(linkz => 
+      this.setState({ linkz: linkz })
+    )
+  }
+
+  getLinkzFromServer = (success) => {    
+    fetch('http://192.168.1.127:3000/linkz')
+      .then(response => {
+        if (response.status >= 200 && response.status < 300) {
+          return Promise.resolve(response)
+        } else {
+          return Promise.reject(new Error(response.statusText))
+        }
+      })
+      .then(response => response.json())
+      .then(success)
+      .catch(error => console.log(error))
   }
 
   handleAddLink = (url, name) => {
-    const link = {
-      url,
-      name
-    };
-    jQuery.ajax({
-      url: "http://192.168.1.127:3000/linkz",
-      type: "post",
-      data: link,
-      success: (res) => {
-        this.setState({ linkz: this.state.linkz.concat([res]).reverse() });
-      }
-    });
+    this.addLink(url, name);
+    this.getLinkzFromServer();
   }
 
-  handleDeleteLink = (id) => {
-    jQuery.ajax({
-      url: "http://192.168.1.127:3000/linkz/" + id,
-      type: "delete",
-      success: "TODO: Update state after delete."
-    });
+  addLink = (url, name) => {
+
+    fetch('http://192.168.1.127:3000/linkz', {
+      method: 'post',
+      body: JSON.stringify({url, name}),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(response => {
+        if (response.status >= 200 && response.status < 300) {
+          return Promise.resolve(response)
+        } else {
+          return Promise.reject(new Error(response.statusText))
+        }
+      })
+      .then(response => response.json())
+      .then(link => this.setState({linkz : this.state.linkz.concat(link)}))
+      .catch(error => console.log(error))
+  };
+
+  updateLink = () => {
+    //...
   }
+
+  handleDeleteLink = (linkId) => {
+    this.deleteLink(linkId);
+  }
+
+  deleteLink = (linkId) => {
+    this.deletLinkFromServer(linkId);
+    this.setState({
+      linkz: this.state.linkz.filter(link => link._id !== linkId)
+    })
+  }
+
+  deletLinkFromServer = (linkId) => {    
+    fetch('http://192.168.1.127:3000/linkz/' + linkId, {
+      method:'delete',
+    })
+    .then(response => {
+      if (response.status >= 200 && response.status < 300) {
+        return Promise.resolve(response)
+      } else {
+        return Promise.reject(new Error(response.statusText))
+      }
+    })
+    .then(response => response.json())
+    .then(linkId)
+    .catch(error => console.log(error))   
+  };
   
   render() {
-    const linkz = this.state.linkz.reverse();
+    const linkz = this.state.linkz.sort((a, b) => {
+      return new Date(b.Created_date) - new Date(a.Created_date)
+    });
     const linkComponents = linkz.map((link) => {
       return (
         <Link
@@ -50,7 +96,7 @@ class Linkz extends Component {
           id={link._id}
           name={link.name}
           url={link.url}
-          created={link.Created_date}
+          createdDate={link.Created_date}
           onDeleteLink={this.handleDeleteLink}
         />
       );
@@ -115,6 +161,9 @@ class Link extends Component {
               <a href={this.props.url}>
                 {this.props.url}
               </a>
+            </span>
+            <span>
+              {new Date(this.props.createdDate).toLocaleString('en-GB', {year: 'numeric', month: 'numeric', day: 'numeric', hour12: true, hour: 'numeric', minute: '2-digit'})}
             </span>
           </Item.Meta>
           <Item.Extra>
