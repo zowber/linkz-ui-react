@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Segment, Header, Form, Item, Button} from 'semantic-ui-react'
+import { Container, Segment, Header, Form, Item, Button, Label} from 'semantic-ui-react'
 
 class Linkz extends Component {
 
@@ -27,16 +27,16 @@ class Linkz extends Component {
       .catch(error => console.log(error))
   }
 
-  handleAddLink = (url, name) => {
-    this.addLink(url, name);
+  handleAddLink = (url, name, labels) => {
+    this.addLink(url, name, labels);
     this.getLinkzFromServer();
   }
 
-  addLink = (url, name) => {
+  addLink = (url, name, labels) => {
 
     fetch('http://192.168.1.127:3000/linkz', {
       method: 'post',
-      body: JSON.stringify({url, name}),
+      body: JSON.stringify({url, name, labels}),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -96,6 +96,7 @@ class Linkz extends Component {
           id={link._id}
           name={link.name}
           url={link.url}
+          labels={link.labels}
           createdDate={link.Created_date}
           onDeleteLink={this.handleDeleteLink}
         />
@@ -121,24 +122,25 @@ class Linkz extends Component {
 }
 
 class LinkForm extends Component {
-  state = { url: '', name: '' };
+  state = { url: '', name: '', labels: '' };
 
-  handleChange = (e, { name, value }) => this.setState({ [name]: value })
+  handleChange = (e, { name, value, labels }) => this.setState({ [name]: value })
 
   handleSubmit = () => {
-    const { url, name } = this.state
-    this.props.onAddLink(url, name);
-    this.setState({ url: '', name: '' });
+    const { url, name, labels } = this.state
+    this.props.onAddLink(url, name, labels);
+    this.setState({ url: '', name: '', labels: '' });
   }
 
   render() {
-    const { url, name } = this.state;
+    const { url, name, labels } = this.state;
 
     return (
       <Form onSubmit={this.handleSubmit}>
         <Form.Group widths='equal'>
           <Form.Input type="text" name="url" value={url} label="URL" placeholder="http://example.com/" onChange={this.handleChange}/>
           <Form.Input type="text" name="name" value={name} label="Name" placeholder="Billy's Cool Site" onChange={this.handleChange} />
+          <Form.Input type="text" name="labels" value={labels} label="Labels" placeholder="dev, tutorial, javascript" onChange={this.handleChange} />
         </Form.Group>
         <Form.Button>Add link</Form.Button>
       </Form>
@@ -165,8 +167,12 @@ class Link extends Component {
             <span>
               {new Date(this.props.createdDate).toLocaleString('en-GB', {year: 'numeric', month: 'numeric', day: 'numeric', hour12: true, hour: 'numeric', minute: '2-digit'})}
             </span>
+            <span>
+              
+            </span>
           </Item.Meta>
           <Item.Extra>
+            <Labels labels={this.props.labels} />
             <Button
               floated='right'
               onClick={this.handleDelete}>Delete
@@ -175,6 +181,21 @@ class Link extends Component {
         </Item.Content>
       </Item>
     );
+  }
+}
+
+class Labels extends React.Component {
+
+  render () {
+    if (this.props.labels !== undefined ) {
+      const labelsArray = this.props.labels.toString().split(',')
+      const labels = labelsArray.map(label => <Label key={label}>{label}</Label>)
+      return (
+        <span>{labels}</span>
+      )
+    } else {
+      return null
+    }
   }
 }
 
