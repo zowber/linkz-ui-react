@@ -1,5 +1,8 @@
-import React, { Component } from 'react';
-import { Container, Segment, Header, Form, Item, Button, Label} from 'semantic-ui-react'
+import React, {Component} from 'react'
+import {Container, Segment, Header, Item, Button} from 'semantic-ui-react'
+
+import Labels from './Labels'
+import LinkForm from './LinkForm'
 
 class Linkz extends Component {
 
@@ -11,6 +14,7 @@ class Linkz extends Component {
     this.getLinkzFromServer(linkz => 
       this.setState({ linkz: linkz })
     )
+    
   }
 
   getLinkzFromServer = (success) => {    
@@ -121,33 +125,6 @@ class Linkz extends Component {
   }
 }
 
-class LinkForm extends Component {
-  state = { url: '', name: '', labels: '' };
-
-  handleChange = (e, { name, value, labels }) => this.setState({ [name]: value })
-
-  handleSubmit = () => {
-    const { url, name, labels } = this.state
-    this.props.onAddLink(url, name, labels);
-    this.setState({ url: '', name: '', labels: '' });
-  }
-
-  render() {
-    const { url, name, labels } = this.state;
-
-    return (
-      <Form onSubmit={this.handleSubmit}>
-        <Form.Group widths='equal'>
-          <Form.Input type="text" name="url" value={url} label="URL" placeholder="http://example.com/" onChange={this.handleChange}/>
-          <Form.Input type="text" name="name" value={name} label="Name" placeholder="Billy's Cool Site" onChange={this.handleChange} />
-          <Form.Input type="text" name="labels" value={labels} label="Labels" placeholder="dev, tutorial, javascript" onChange={this.handleChange} />
-        </Form.Group>
-        <Form.Button>Add link</Form.Button>
-      </Form>
-    );
-  }
-}
-
 class Link extends Component {
   handleDelete = () => {
     this.props.onDeleteLink(this.props.id);
@@ -184,19 +161,4 @@ class Link extends Component {
   }
 }
 
-class Labels extends React.Component {
-
-  render () {
-    if (this.props.labels !== undefined ) {
-      const labelsArray = this.props.labels.toString().split(',')
-      const labels = labelsArray.map(label => <Label key={label}>{label}</Label>)
-      return (
-        <span>{labels}</span>
-      )
-    } else {
-      return null
-    }
-  }
-}
-
-export default Linkz;
+export default Linkz
