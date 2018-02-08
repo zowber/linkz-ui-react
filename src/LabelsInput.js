@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Form, Button, Input} from 'semantic-ui-react'
+import {Form, Button} from 'semantic-ui-react'
 import Labels from './Labels'
 
 class LabelsInput extends Component {
@@ -33,11 +33,13 @@ class LabelsInput extends Component {
           name='label'
           placeholder='Tags'
           value={labelToAdd}
+          action={
+            <Button
+              onClick={this.handleAddLabelClick}
+            >Add label
+            </Button>
+          }
           onChange={this.handleChange} />
-        <Button
-          onClick={this.handleAddLabelClick}
-        >Add label
-        </Button>
         
         <Labels
           labels={this.props.labels}
