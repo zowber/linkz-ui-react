@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Container, Segment, Header, Item, Button} from 'semantic-ui-react'
 
-import Labels from './Labels'
+import Link from './Link'
 import LinkForm from './LinkForm'
 
 class Linkz extends Component {
@@ -14,7 +14,6 @@ class Linkz extends Component {
     this.getLinkzFromServer(linkz => 
       this.setState({ linkz: linkz })
     )
-    
   }
 
   getLinkzFromServer = (success) => {    
@@ -107,7 +106,7 @@ class Linkz extends Component {
       );
     }); 
 
-    var headerStyle = { marginTop: '2em', marginBottom: '1em' }
+    let headerStyle = { marginTop: '2em', marginBottom: '1em' }
 
     return (
       <Container>
@@ -121,42 +120,6 @@ class Linkz extends Component {
           </Item.Group>
         </Segment>
       </Container>
-    );
-  }
-}
-
-class Link extends Component {
-  handleDelete = () => {
-    this.props.onDeleteLink(this.props.id);
-  }
-
-  render() {
-    return (
-      <Item>
-        <Item.Content>
-          <Item.Header>{this.props.name}</Item.Header>
-          <Item.Meta>
-            <span>
-              <a href={this.props.url}>
-                {this.props.url}
-              </a>
-            </span>
-            <span>
-              {new Date(this.props.createdDate).toLocaleString('en-GB', {year: 'numeric', month: 'numeric', day: 'numeric', hour12: true, hour: 'numeric', minute: '2-digit'})}
-            </span>
-            <span>
-              
-            </span>
-          </Item.Meta>
-          <Item.Extra>
-            <Labels labels={this.props.labels} />
-            <Button
-              floated='right'
-              onClick={this.handleDelete}>Delete
-            </Button>
-          </Item.Extra>
-        </Item.Content>
-      </Item>
     );
   }
 }
