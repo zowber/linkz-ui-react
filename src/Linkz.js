@@ -1,13 +1,15 @@
-import React, {Component} from 'react'
-import {Container, Segment, Header, Item, Button} from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { Container, Segment, Header, Form, Input, Item, Button} from 'semantic-ui-react'
 
 import Link from './Link'
 import LinkForm from './LinkForm'
 
+
 class Linkz extends Component {
 
   state = {
-    linkz: []
+    linkz: [],
+    filterString: ''
   }
 
   componentWillMount() {
@@ -87,12 +89,23 @@ class Linkz extends Component {
     .then(linkId)
     .catch(error => console.log(error))   
   };
+
+  handleFilterStringChange = (e, {value}) => {
+    this.setState({filterString: value})
+  }
   
   render() {
     const linkz = this.state.linkz.sort((a, b) => {
       return new Date(b.Created_date) - new Date(a.Created_date)
     });
-    const linkComponents = linkz.map((link) => {
+    const filteredLinks = linkz.filter(link => (
+        link.name.toLowerCase().includes(
+          this.state.filterString.toLowerCase()
+        )
+      )
+    );
+
+    const linkComponents = filteredLinks.map((link) => {
       return (
         <Link
           key={link._id}
@@ -115,6 +128,7 @@ class Linkz extends Component {
           <LinkForm onAddLink={this.handleAddLink} />
         </Segment>
         <Segment>
+          <Input value={this.state.filterString} onChange={this.handleFilterStringChange} placeholder='Search' />
           <Item.Group divided>
             {linkComponents}
           </Item.Group>
