@@ -122,7 +122,7 @@ class Linkz extends Component {
 
     return (
       <Container>
-        <Grid>
+        <Grid stackable>
           <Grid.Column width={16}>
             <Header style={headerStyle} as='h1' content='Linkz' />
           </Grid.Column>
