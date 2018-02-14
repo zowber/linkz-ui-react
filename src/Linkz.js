@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Grid, Container, Segment, Menu, Header, Form, Input, Item, Button} from 'semantic-ui-react'
+import { Grid, Container, Segment, Menu, Header, Input, Item} from 'semantic-ui-react'
 
 import Link from './Link'
 import LinkForm from './LinkForm'
+
+import data from './data'
 
 class Linkz extends Component {
 
@@ -12,82 +14,22 @@ class Linkz extends Component {
   }
 
   componentWillMount() {
-    this.getLinkzFromServer(linkz => 
-      this.setState({ linkz: linkz })
-    )
+    data.getLinkzFromServer(res => 
+      this.setState({ linkz: res })
+    );
   }
 
-  getLinkzFromServer = (success) => {    
-    fetch('http://192.168.1.127:3000/linkz')
-      .then(response => {
-        if (response.status >= 200 && response.status < 300) {
-          return Promise.resolve(response)
-        } else {
-          return Promise.reject(new Error(response.statusText))
-        }
-      })
-      .then(response => response.json())
-      .then(success)
-      .catch(error => console.log(error))
+  handleAddLink = (link) => {
+    data.addLink(link, res => {
+      this.setState({ linkz: this.state.linkz.concat(res) })
+    });
   }
 
-  handleAddLink = (url, name, labels) => {
-    this.addLink(url, name, labels);
-    this.getLinkzFromServer();
+  handleDeleteLink = (linkId, res) => {
+    data.deletLinkFromServer(linkId, res => {
+      this.setState({ linkz: res })
+    });
   }
-
-  handleEditClick = (e, props) => {
-    console.log(e, props)
-  }
-
-  addLink = (url, name, labels) => {
-
-    fetch('http://192.168.1.127:3000/linkz', {
-      method: 'post',
-      body: JSON.stringify({url, name, labels}),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
-    })
-      .then(response => {
-        if (response.status >= 200 && response.status < 300) {
-          return Promise.resolve(response)
-        } else {
-          return Promise.reject(new Error(response.statusText))
-        }
-      })
-      .then(response => response.json())
-      .then(link => this.setState({linkz : this.state.linkz.concat(link)}))
-      .catch(error => console.log(error))
-  };
-
-  handleDeleteLink = (linkId) => {
-    this.deleteLink(linkId);
-  }
-
-  deleteLink = (linkId) => {
-    this.deletLinkFromServer(linkId);
-    this.setState({
-      linkz: this.state.linkz.filter(link => link._id !== linkId)
-    })
-  }
-
-  deletLinkFromServer = (linkId) => {    
-    fetch('http://192.168.1.127:3000/linkz/' + linkId, {
-      method:'delete',
-    })
-    .then(response => {
-      if (response.status >= 200 && response.status < 300) {
-        return Promise.resolve(response)
-      } else {
-        return Promise.reject(new Error(response.statusText))
-      }
-    })
-    .then(response => response.json())
-    .then(linkId)
-    .catch(error => console.log(error))   
-  };
 
   handleFilterStringChange = (e, {value}) => {
     this.setState({filterString: value})
