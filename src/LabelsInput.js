@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {Form, Button} from 'semantic-ui-react'
-import Labels from './Labels'
 
 class LabelsInput extends Component {
 
