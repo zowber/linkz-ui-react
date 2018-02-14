@@ -24,30 +24,25 @@ class LabelsInput extends Component {
   }
 
   render() {
-    const labelToAdd = this.state.labelToAdd
+    const labelToAdd = this.state.labelToAdd;
 
     return (
-      <Form.Group>
-        <Form.Input
-          type='text'
-          name='label'
-          placeholder='Tags'
-          value={labelToAdd}
-          action={
-            <Button
-              onClick={this.handleAddLabelClick}
-            >Add label
-            </Button>
-          }
-          onChange={this.handleChange} />
-        
-        <Labels
-          labels={this.props.labels}
-        />
-      </Form.Group>
-    )
+      <Form.Input
+        fluid
+        type='text'
+        name='label'
+        placeholder='Tags'
+        value={labelToAdd}
+        action={
+          <Button
+            onClick={this.handleAddLabelClick}
+          >Add tag
+          </Button>
+        }
+        onChange={this.handleChange}
+      />
+    );
   }
-
 }
 
 export default LabelsInput

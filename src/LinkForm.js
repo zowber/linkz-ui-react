@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Form} from 'semantic-ui-react'
-import LabelsInput from './LabelsInput' 
+import LabelsInput from './LabelsInput'
+import Labels from './Labels'
 
 class LinkForm extends Component {
  
@@ -17,8 +18,6 @@ class LinkForm extends Component {
   handleSubmit = () => {
     const { url, name, labels } = this.state
     this.props.onAddLink(url, name, labels);
-
-    // Empty out the form
     this.setState({ url: '', name: '', labels: [] });
   }
 
@@ -27,6 +26,7 @@ class LinkForm extends Component {
   }
 
   handleRemoveLabel = labelId => {
+    this.setState({ labels: this.state.labels.filter(label => (label.id === labelId)) })
   }
 
   render() {
@@ -34,30 +34,31 @@ class LinkForm extends Component {
 
     return (
       <Form onSubmit={this.handleSubmit}>
-        <Form.Group>
-          <Form.Input
-            type="text"
-            name="url"
-            value={url}
-            placeholder="URL"
-            onChange={this.handleChange}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Input
-            type='text'
-            name='name'
-            value={name}
-            placeholder="Name"
-            onChange={this.handleChange}
-          />
-        </Form.Group>
+        <Form.Input
+          fluid
+          type="text"
+          name="url"
+          value={url}
+          placeholder="URL"
+          onChange={this.handleChange}
+        />
+        <Form.Input
+          fluid
+          type='text'
+          name='name'
+          value={name}
+          placeholder="Name"
+          onChange={this.handleChange}
+        />
         <LabelsInput
           labels={labels}
           onAddLabel={this.handleAddLabel}
           onRemoveLabel={this.handleRemoveLabel}
         />
-        <Form.Button>Add link</Form.Button>
+        <Labels
+          labels={this.state.labels}
+        />
+        <Form.Button primary fluid>Add link</Form.Button>
       </Form>
     );
   }
