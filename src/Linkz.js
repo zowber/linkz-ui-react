@@ -134,6 +134,11 @@ class Linkz extends Component {
           <Grid.Column width={12}>
             <Menu attached='top'>
               <Menu.Item>
+                {linkComponents.length} links
+              </Menu.Item>
+              <Menu.Item
+                position='right'
+              >
                 <Input
                   icon='search' 
                   transparent
@@ -141,11 +146,6 @@ class Linkz extends Component {
                   value={this.state.filterString}
                   onChange={this.handleFilterStringChange}
                 />
-              </Menu.Item>
-              <Menu.Item
-                position='right'
-              >
-                {linkComponents.length} links
               </Menu.Item>
             </Menu>
             <Segment attached='bottom'>

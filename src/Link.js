@@ -25,7 +25,9 @@ class Link extends Component {
             >
               <i className='trash icon' />
             </Button>
-            <Item.Header>{this.props.name}</Item.Header>
+            <Item.Header>
+              <a href={this.props.url}>{this.props.name}</a>
+            </Item.Header>
             <Item.Meta>
               <span>
                 <a href={this.props.url}>
