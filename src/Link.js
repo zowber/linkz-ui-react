@@ -7,28 +7,37 @@ class Link extends Component {
     handleDelete = () => {
       this.props.onDeleteLink(this.props.id);
     }
+
+    urlToHost = (url) => {
+      const urlObj = new URL(url);
+      const host = urlObj.host.replace('www.', '')
+      return host
+    };
   
     render() {
       return (
         <Item>
           <Item.Content>
+            <Button
+              icon
+              floated='right'
+              onClick={this.handleDelete}
+            >
+              <i className='trash icon' />
+            </Button>
             <Item.Header>{this.props.name}</Item.Header>
             <Item.Meta>
               <span>
                 <a href={this.props.url}>
-                  {this.props.url}
+                  {this.urlToHost(this.props.url)}
                 </a>
               </span>
               <span>
-                {new Date(this.props.createdDate).toLocaleString('en-GB', {year: 'numeric', month: 'numeric', day: 'numeric', hour12: true, hour: 'numeric', minute: '2-digit'})}
+                {new Date(this.props.createdDate).toLocaleString('en-GB', {year: 'numeric', month: 'short', day: 'numeric'})}
               </span>
             </Item.Meta>
             <Item.Extra>
               <Labels labels={this.props.labels} />
-              <Button
-                floated='right'
-                onClick={this.handleDelete}>Delete
-              </Button>
             </Item.Extra>
           </Item.Content>
         </Item>

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Segment, Header, Form, Input, Item, Button} from 'semantic-ui-react'
+import { Grid, Container, Segment, Menu, Header, Form, Input, Item, Button} from 'semantic-ui-react'
 
 import Link from './Link'
 import LinkForm from './LinkForm'
-
 
 class Linkz extends Component {
 
@@ -37,6 +36,10 @@ class Linkz extends Component {
     this.getLinkzFromServer();
   }
 
+  handleEditClick = (e, props) => {
+    console.log(e, props)
+  }
+
   addLink = (url, name, labels) => {
 
     fetch('http://192.168.1.127:3000/linkz', {
@@ -58,10 +61,6 @@ class Linkz extends Component {
       .then(link => this.setState({linkz : this.state.linkz.concat(link)}))
       .catch(error => console.log(error))
   };
-
-  updateLink = () => {
-    //...
-  }
 
   handleDeleteLink = (linkId) => {
     this.deleteLink(linkId);
@@ -119,20 +118,43 @@ class Linkz extends Component {
       );
     }); 
 
-    let headerStyle = { marginTop: '2em', marginBottom: '1em' }
+    let headerStyle = { marginTop: '2em', marginBottom: '1em', textAlign: 'center' }
 
     return (
       <Container>
-        <Header as='h1' textAlign='center' style={headerStyle}>Linkz</Header>
-        <Segment>
-          <LinkForm onAddLink={this.handleAddLink} />
-        </Segment>
-        <Segment>
-          <Input value={this.state.filterString} onChange={this.handleFilterStringChange} placeholder='Search' />
-          <Item.Group divided>
-            {linkComponents}
-          </Item.Group>
-        </Segment>
+        <Grid>
+          <Grid.Column width={16}>
+            <Header style={headerStyle} as='h1' content='Linkz' />
+          </Grid.Column>
+          <Grid.Column width={4}>
+            <Segment>
+              <LinkForm onAddLink={this.handleAddLink} />
+            </Segment>
+          </Grid.Column>
+          <Grid.Column width={12}>
+            <Menu attached='top'>
+              <Menu.Item>
+                <Input
+                  icon='search' 
+                  transparent
+                  placeholder='Search'
+                  value={this.state.filterString}
+                  onChange={this.handleFilterStringChange}
+                />
+              </Menu.Item>
+              <Menu.Item
+                position='right'
+              >
+                {linkComponents.length} links
+              </Menu.Item>
+            </Menu>
+            <Segment attached='bottom'>
+              <Item.Group divided>
+                {linkComponents}
+              </Item.Group>
+            </Segment>
+          </Grid.Column>
+        </Grid>
       </Container>
     );
   }

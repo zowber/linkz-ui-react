@@ -5,11 +5,16 @@ class Labels extends React.Component {
   render () {
     if (this.props.labels.length === 0) return null
 
-    const labels = this.props.labels.map((label) => {
-        return <Label key={label.id} tag>{label.name}</Label>
-      }
+    const labels = this.props.labels.map(
+      label => (
+        <Label key={label.id}>{label.name}</Label>
+      )
+    );
+    return (
+      <Label.Group size='small'>
+        {labels}
+      </Label.Group>
     )
-    return (<div>{labels}</div>)
   }
 }
 
