@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'semantic-ui-css/semantic.min.css';
-import Linkz from './Linkz';
+import App from './App';
 
-ReactDOM.render(<Linkz />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
