@@ -2,7 +2,6 @@ import React, {component} from 'react';
 
 class Linkz extends Component {
 
-
   render() {
     const sortedLinkz = this.state.linkz.sort((a, b) => (
       new Date(b.Created_date) - new Date(a.Created_date)

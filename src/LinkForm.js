@@ -6,9 +6,10 @@ import Labels from './Labels'
 class LinkForm extends Component {
  
   state = {
-    url: '',
-    name: '',
-    labels: []
+    id: this.props.linkId || null,
+    url: this.props.url || '',
+    name: this.props.name || '',
+    labels: this.props.labels || []
   }
 
   handleChange = (e, { name, value }) => {
@@ -17,7 +18,7 @@ class LinkForm extends Component {
 
   handleSubmit = () => {
     const link = this.state;
-    this.props.onAddLink(link);
+    this.props.onSaveLink(link);
     this.setState({ url: '', name: '', labels: [] });
   }
 
