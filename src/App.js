@@ -78,7 +78,7 @@ class App extends Component {
           </Grid.Column>
           <Grid.Column width={4}>
             <Segment>
-              <LinkForm onSaveLink={this.handleAddLink} />
+              <LinkForm onSaveLink={this.handleAddLink} saveButtonText='Add link' />
             </Segment>
           </Grid.Column>
           <Grid.Column width={12}>

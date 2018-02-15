@@ -32,7 +32,7 @@ class LinkForm extends Component {
 
   render() {
     const { url, name, labels } = this.state;
-
+    console.log(this.props.saveButtonText)
     return (
       <Form onSubmit={this.handleSubmit}>
         <Form.Input
@@ -59,7 +59,7 @@ class LinkForm extends Component {
         <Labels
           labels={this.state.labels}
         />
-        <Form.Button primary fluid>Add link</Form.Button>
+        <Form.Button primary fluid>{this.props.saveButtonText}</Form.Button>
       </Form>
     );
   }

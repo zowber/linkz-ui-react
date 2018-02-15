@@ -53,6 +53,7 @@ class Link extends Component {
               name={this.props.name}
               url={this.props.url}
               labels={this.props.labels}
+              saveButtonText='Update link'
             />
           </Item.Content>
         </Item>
