@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Item, Button} from 'semantic-ui-react'
+import isURL from 'validator/lib/isURL'
 
 import Labels from './Labels'
 import LinkForm from './LinkForm'
@@ -28,10 +29,14 @@ class Link extends Component {
   }
 
   urlToHost = (url) => {
-    const urlObj = new URL(url);
-    const host = urlObj.host.replace('www.', '')
-    return host
-  };
+    if (isURL(url)) {
+      const urlObj = new URL(url);
+      const host = urlObj.host.replace('www.', '')
+      return host
+    } else {
+      return url
+    }
+  }
 
   openEditForm = () => {
     this.setState( {isEditing: true} )
