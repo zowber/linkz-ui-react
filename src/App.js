@@ -25,6 +25,13 @@ class App extends Component {
     });
   }
 
+  handleUpdateLink = (link) => {
+    data.updateLink(link, res => {
+      this.setState({ linkz: res })
+    })
+  }
+  
+
   handleDeleteLink = (linkId, res) => {
     data.deletLinkFromServer(linkId, res => {
       this.setState({ linkz: res })
@@ -55,6 +62,7 @@ class App extends Component {
           url={link.url}
           labels={link.labels}
           createdDate={link.Created_date}
+          onSaveLink={this.handleUpdateLink}
           onDeleteLink={this.handleDeleteLink}
         />
       );
@@ -70,7 +78,7 @@ class App extends Component {
           </Grid.Column>
           <Grid.Column width={4}>
             <Segment>
-              <LinkForm onAddLink={this.handleAddLink} />
+              <LinkForm onSaveLink={this.handleAddLink} saveButtonText='Add link' />
             </Segment>
           </Grid.Column>
           <Grid.Column width={12}>

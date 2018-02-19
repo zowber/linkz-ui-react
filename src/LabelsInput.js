@@ -15,11 +15,11 @@ class LabelsInput extends Component {
 
   handleAddLabelClick = (e) => {
     e.preventDefault()
-    this.setState({labelToAdd: ''})
     this.props.onAddLabel({
       id: this.props.labels.length + 1,
       name: this.state.labelToAdd
     })
+    this.setState({labelToAdd: ''})
   }
 
   render() {
