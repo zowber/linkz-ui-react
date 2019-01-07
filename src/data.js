@@ -1,8 +1,9 @@
-const serverHost = 'http://localhost:3000'
+const API_HOST = process.env.REACT_APP_API_HOST || 'http://localhost:3000'
+console.log('API_HOST: ' + API_HOST)
 
 const data = {
   getLinkzFromServer: (success) => {    
-    fetch('http://localhost:3000/linkz/')
+    fetch(API_HOST + '/linkz/')
       .then(response => {
         if (response.status >= 200 && response.status < 300) {
           return Promise.resolve(response)
@@ -15,7 +16,7 @@ const data = {
       .catch(error => console.log(error))
   },
   addLink: (link, success) => {
-    fetch('http://localhost:3000/linkz/', {
+    fetch(API_HOST + '/linkz/', {
       method: 'post',
       body: JSON.stringify(link),
       headers: {
@@ -35,7 +36,7 @@ const data = {
       .catch(error => console.log(error))
   },
   updateLink: (link, success) => {
-    fetch('http://localhost:3000/linkz/' + link.id, {
+    fetch(API_HOST + '/linkz/' + link.id, {
       method: 'put',
       body: JSON.stringify(link),
       headers: {
@@ -54,9 +55,8 @@ const data = {
       .then(success)
       .catch(error => console.log(error))
   },
-  deletLinkFromServer : (linkId, success) => {
-    console.log(linkId)
-    fetch('http://localhost:3000/linkz/' + linkId, {
+  deleteLinkFromServer : (linkId, success) => {
+    fetch(API_HOST + '/linkz/' + linkId, {
       method:'delete',
     })
     .then(response => {
