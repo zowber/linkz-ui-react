@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   linkz-ui-react:
-    image: linkz-ui-react
+    image: zowber/linkz-ui-react
     build: .
     environment:
       NODE_ENV: production
