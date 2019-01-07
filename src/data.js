@@ -2,7 +2,7 @@ const API_HOST = process.env.REACT_APP_API_HOST || 'http://localhost:3000'
 console.log('API_HOST: ' + API_HOST)
 
 const data = {
-  getLinkzFromServer: (success) => {    
+  getLinkzFromServer: success => {
     fetch(API_HOST + '/linkz/')
       .then(response => {
         if (response.status >= 200 && response.status < 300) {
@@ -20,8 +20,8 @@ const data = {
       method: 'post',
       body: JSON.stringify(link),
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       }
     })
       .then(response => {
@@ -40,8 +40,8 @@ const data = {
       method: 'put',
       body: JSON.stringify(link),
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       }
     })
       .then(response => {
@@ -55,20 +55,20 @@ const data = {
       .then(success)
       .catch(error => console.log(error))
   },
-  deleteLinkFromServer : (linkId, success) => {
+  deleteLinkFromServer: (linkId, success) => {
     fetch(API_HOST + '/linkz/' + linkId, {
-      method:'delete',
+      method: 'delete'
     })
-    .then(response => {
-      if (response.status >= 200 && response.status < 300) {
-        return Promise.resolve(response)
-      } else {
-        return Promise.reject(new Error(response.statusText))
-      }
-    })
-    .then(response => response.json())
-    .then(success)
-    .catch(error => console.log(error))   
+      .then(response => {
+        if (response.status >= 200 && response.status < 300) {
+          return Promise.resolve(response)
+        } else {
+          return Promise.reject(new Error(response.statusText))
+        }
+      })
+      .then(response => response.json())
+      .then(success)
+      .catch(error => console.log(error))
   }
 }
 

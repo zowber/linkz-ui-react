@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 import {
   Grid,
   Container,
@@ -7,53 +7,53 @@ import {
   Header,
   Input,
   Item
-} from "semantic-ui-react";
+} from 'semantic-ui-react'
 
-import Link from "./Link";
-import LinkForm from "./LinkForm";
+import Link from './Link'
+import LinkForm from './LinkForm'
 
-import data from "./data";
+import data from './data'
 
 class App extends Component {
   state = {
     linkz: [],
-    filterString: ""
-  };
+    filterString: ''
+  }
 
   componentWillMount() {
-    data.getLinkzFromServer(res => this.setState({ linkz: res }));
+    data.getLinkzFromServer(res => this.setState({ linkz: res }))
   }
 
   handleAddLink = link => {
     data.addLink(link, res => {
-      this.setState({ linkz: this.state.linkz.concat(res) });
-    });
-  };
+      this.setState({ linkz: this.state.linkz.concat(res) })
+    })
+  }
 
   handleUpdateLink = link => {
     data.updateLink(link, res => {
-      this.setState({ linkz: this.state.linkz.map() });
-    });
-  };
+      this.setState({ linkz: this.state.linkz.map() })
+    })
+  }
 
   handleDeleteLink = (linkId, res) => {
     data.deleteLinkFromServer(linkId, res => {
-      this.setState({ linkz: res });
-    });
-  };
+      this.setState({ linkz: res })
+    })
+  }
 
   handleFilterStringChange = (e, { value }) => {
-    this.setState({ filterString: value });
-  };
+    this.setState({ filterString: value })
+  }
 
   render() {
-    const linkz = this.state.linkz.sort((a, b) => 
-      new Date(b.Created_date) - new Date(a.Created_date)
-    );
-    
-    const filteredLinks = linkz.filter(link => 
+    const linkz = this.state.linkz.sort(
+      (a, b) => new Date(b.Created_date) - new Date(a.Created_date)
+    )
+
+    const filteredLinks = linkz.filter(link =>
       link.name.toLowerCase().includes(this.state.filterString.toLowerCase())
-    );
+    )
 
     const linkComponents = filteredLinks.map(link => {
       return (
@@ -67,14 +67,14 @@ class App extends Component {
           onSaveLink={this.handleUpdateLink}
           onDeleteLink={this.handleDeleteLink}
         />
-      );
-    });
+      )
+    })
 
     let headerStyle = {
-      marginTop: "2em",
-      marginBottom: "1em",
-      textAlign: "center"
-    };
+      marginTop: '2em',
+      marginBottom: '1em',
+      textAlign: 'center'
+    }
 
     return (
       <Container>
@@ -109,8 +109,8 @@ class App extends Component {
           </Grid.Column>
         </Grid>
       </Container>
-    );
+    )
   }
 }
 
-export default App;
+export default App

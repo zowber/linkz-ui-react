@@ -1,36 +1,35 @@
-import React, {Component} from 'react'
-import {Item, Button} from 'semantic-ui-react'
+import React, { Component } from 'react'
+import { Item, Button } from 'semantic-ui-react'
 import isURL from 'validator/lib/isURL'
 
 import Labels from './Labels'
 import LinkForm from './LinkForm'
 
 class Link extends Component {
-
   state = {
     isEditing: false
   }
 
   handleEdit = () => {
-    this.openEditForm();
+    this.openEditForm()
   }
 
   handleClose = () => {
-    this.closeEditForm();
+    this.closeEditForm()
   }
 
   handleDelete = () => {
-    this.props.onDeleteLink(this.props.id);
+    this.props.onDeleteLink(this.props.id)
   }
 
-  handleSaveLink = (link) => {
-    this.props.onSaveLink(link);
-    this.closeEditForm();
+  handleSaveLink = link => {
+    this.props.onSaveLink(link)
+    this.closeEditForm()
   }
 
-  urlToHost = (url) => {
+  urlToHost = url => {
     if (isURL(url)) {
-      const urlObj = new URL(url);
+      const urlObj = new URL(url)
       const host = urlObj.host.replace('www.', '')
       return host
     } else {
@@ -39,11 +38,11 @@ class Link extends Component {
   }
 
   openEditForm = () => {
-    this.setState( {isEditing: true} )
+    this.setState({ isEditing: true })
   }
 
   closeEditForm = () => {
-    this.setState( {isEditing: false} )
+    this.setState({ isEditing: false })
   }
 
   render() {
@@ -58,7 +57,7 @@ class Link extends Component {
               name={this.props.name}
               url={this.props.url}
               labels={this.props.labels}
-              saveButtonText='Update link'
+              saveButtonText="Update link"
             />
           </Item.Content>
         </Item>
@@ -70,28 +69,22 @@ class Link extends Component {
             <Item.Header>
               <a href={this.props.url}>{this.props.name}</a>
             </Item.Header>
-            <Button
-              icon
-              floated='right'
-              onClick={this.handleEdit}
-            >
-              <i className='edit icon' />
+            <Button icon floated="right" onClick={this.handleEdit}>
+              <i className="edit icon" />
             </Button>
-            <Button
-              icon
-              floated='right'
-              onClick={this.handleDelete}
-            >
-              <i className='trash icon' />
+            <Button icon floated="right" onClick={this.handleDelete}>
+              <i className="trash icon" />
             </Button>
             <Item.Meta>
               <span>
-                <a href={this.props.url}>
-                  {this.urlToHost(this.props.url)}
-                </a>
+                <a href={this.props.url}>{this.urlToHost(this.props.url)}</a>
               </span>
               <span>
-                {new Date(this.props.createdDate).toLocaleString('en-GB', {year: 'numeric', month: 'short', day: 'numeric'})}
+                {new Date(this.props.createdDate).toLocaleString('en-GB', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
+                })}
               </span>
             </Item.Meta>
             <Item.Extra>

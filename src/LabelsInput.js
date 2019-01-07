@@ -1,10 +1,9 @@
-import React, {Component} from 'react'
-import {Form, Button} from 'semantic-ui-react'
+import React, { Component } from 'react'
+import { Form, Button } from 'semantic-ui-react'
 
 class LabelsInput extends Component {
-
   state = {
-    labelToAdd: '',
+    labelToAdd: ''
   }
 
   handleChange = (e, label) => {
@@ -13,34 +12,29 @@ class LabelsInput extends Component {
     })
   }
 
-  handleAddLabelClick = (e) => {
+  handleAddLabelClick = e => {
     e.preventDefault()
     this.props.onAddLabel({
       id: this.props.labels.length + 1,
       name: this.state.labelToAdd
     })
-    this.setState({labelToAdd: ''})
+    this.setState({ labelToAdd: '' })
   }
 
   render() {
-    const labelToAdd = this.state.labelToAdd;
+    const labelToAdd = this.state.labelToAdd
 
     return (
       <Form.Input
         fluid
-        type='text'
-        name='label'
-        placeholder='Tags'
+        type="text"
+        name="label"
+        placeholder="Tags"
         value={labelToAdd}
-        action={
-          <Button
-            onClick={this.handleAddLabelClick}
-          >Add tag
-          </Button>
-        }
+        action={<Button onClick={this.handleAddLabelClick}>Add tag</Button>}
         onChange={this.handleChange}
       />
-    );
+    )
   }
 }
 
