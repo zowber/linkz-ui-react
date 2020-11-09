@@ -70,24 +70,13 @@ class App extends Component {
       )
     })
 
-    let headerStyle = {
-      marginTop: '2em',
-      marginBottom: '1em',
-      textAlign: 'center'
-    }
-
     return (
-      <Container>
+      <Container style={{ paddingTop: '1em' }}>
         <Grid stackable>
-          <Grid.Column width={16}>
-            <Header style={headerStyle} as="h1" content="Linkz" />
-          </Grid.Column>
           <Grid.Column width={4}>
             <Segment>
-              <LinkForm
-                onSaveLink={this.handleAddLink}
-                saveButtonText="Add link"
-              />
+              <Header as="h4" content="Add a link" />
+              <LinkForm onSaveLink={this.handleAddLink} saveButtonText="Save" />
             </Segment>
           </Grid.Column>
           <Grid.Column width={12}>
