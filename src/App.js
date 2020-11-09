@@ -20,7 +20,7 @@ class App extends Component {
     filterString: ''
   }
 
-  componentWillMount() {
+  componentDidMount() {
     data.getLinkzFromServer(res => this.setState({ linkz: res }))
   }
 
