@@ -9,51 +9,50 @@ const checkStatus = response => {
   }
 }
 
-const data = {
-  getLinkzFromServer: success => {
-    fetch(API_HOST + "/linkz/")
-      .then(checkStatus)
-      .then(response => response.json())
-      .then(success)
-      .catch(error => console.log(error))
-  },
-  addLink: (link, success) => {
-    fetch(API_HOST + "/linkz/", {
-      method: "post",
-      body: JSON.stringify(link),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    })
-      .then(checkStatus)
-      .then(response => response.json())
-      .then(success)
-      .catch(error => console.log(error))
-  },
-  updateLink: (link, success) => {
-    fetch(API_HOST + "/linkz/" + link.id, {
-      method: "put",
-      body: JSON.stringify(link),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    })
-      .then(checkStatus)
-      .then(response => response.json())
-      .then(success)
-      .catch(error => console.log(error))
-  },
-  deleteLinkFromServer: (linkId, success) => {
-    fetch(API_HOST + "/linkz/" + linkId, {
-      method: "delete"
-    })
-      .then(checkStatus)
-      .then(response => response.json())
-      .then(success)
-      .catch(error => console.log(error))
-  }
+export function getLinkzFromServer(success) {
+  fetch(API_HOST + "/linkz/")
+    .then(checkStatus)
+    .then(response => response.json())
+    .then(success)
+    .catch(error => console.log(error))
 }
 
-export default data
+export function addLink(link, success) {
+  fetch(API_HOST + "/linkz/", {
+    method: "post",
+    body: JSON.stringify(link),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    }
+  })
+    .then(checkStatus)
+    .then(response => response.json())
+    .then(success)
+    .catch(error => console.log(error))
+}
+
+export function updateLink(link, success) {
+  fetch(API_HOST + "/linkz/" + link.id, {
+    method: "put",
+    body: JSON.stringify(link),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    }
+  })
+    .then(checkStatus)
+    .then(response => response.json())
+    .then(success)
+    .catch(error => console.log(error))
+}
+
+export function deleteLinkFromServer(linkId, success) {
+  fetch(API_HOST + "/linkz/" + linkId, {
+    method: "delete"
+  })
+    .then(checkStatus)
+    .then(response => response.json())
+    .then(success)
+    .catch(error => console.log(error))
+}

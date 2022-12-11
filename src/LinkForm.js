@@ -91,7 +91,7 @@ class LinkForm extends Component {
         />
         <LabelsInput labels={link.labels} onAddLabel={this.handleAddLabel} />
         <Labels labels={link.labels} onRemove={this.handleRemoveLabel} />
-        <Form.Button primary fluid>
+        <Form.Button primary>
           {this.props.saveButtonText}
         </Form.Button>
       </Form>

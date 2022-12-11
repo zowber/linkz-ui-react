@@ -1,20 +1,15 @@
-import React, { Component } from 'react'
-import { TextField } from 'material-ui'
+import { TextField } from 'semantic-ui-react'
 
-class SearchInput extends Component {
+export default function SearchInput(props) {
   handleFilterChange = e => {
-    this.props.onFilterChange(e.target.value)
+    props.onFilterChange(e.target.value)
   }
 
-  render() {
-    return (
-      <TextField
-        placeholder="Search"
-        value={this.props.filterString}
-        onChange={this.handleFilterChange}
-      />
-    )
-  }
+  return (
+    <TextField
+      placeholder="Search"
+      value={props.filterString}
+      onChange={handleFilterChange}
+    />
+  )
 }
-
-export default SearchInput
