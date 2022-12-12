@@ -1,5 +1,10 @@
 import { useState } from 'react'
-import { Item, Button } from 'semantic-ui-react'
+
+import { Item } from 'semantic-ui-react'
+import { Button, Divider, IconButton, ListItem, ListItemText } from '@mui/material'
+import { Edit as EditIcon } from '@mui/icons-material'
+
+
 import isURL from 'validator/lib/isURL'
 
 import Labels from './Labels'
@@ -36,51 +41,51 @@ export default function Link(props) {
 
   return (
     <>
-    {isEditing ?
-      <Item>
-        <Item.Content>
-          <Button onClick={closeEditForm}>Close</Button>
-          <LinkForm
-            onSaveLink={handleSaveLink}
-            linkId={props.id}
-            name={props.name}
-            url={props.url}
-            labels={props.labels}
-            saveButtonText="Update link"
-          />
-        </Item.Content>
-      </Item>
-      :
-      <Item>
-        <Item.Content>
-          <Item.Header>
-            <a href={props.url}>{props.name}</a>
-          </Item.Header>
+      {isEditing ?
+        <Item>
+          <Item.Content>
+            <Button onClick={closeEditForm}>Close</Button>
+            <LinkForm
+              onSaveLink={handleSaveLink}
+              linkId={props.id}
+              name={props.name}
+              url={props.url}
+              labels={props.labels}
+              saveButtonText="Update link"
+            />
+          </Item.Content>
+        </Item>
+        :
+        <ListItem
+          secondaryAction={
+            <IconButton edge="end" aria-label="edit">
+              <EditIcon />
+            </IconButton>
+          }
+        >
+          <ListItemText
+            primary={`${props.name}`}
+            secondary={`${urlToHost(props.url)} - ${new Date(props.createdDate).toLocaleString('en-GB',
+              {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+              })}`} />
+
+          {/*       
+          
           <Button icon floated="right" onClick={openEditForm}>
             <i className="edit icon" />
           </Button>
           <Button icon floated="right" onClick={handleDelete}>
             <i className="trash icon" />
           </Button>
-          <Item.Meta>
-            <span>
-              <a href={props.url}>{urlToHost(props.url)}</a>
-            </span>
-            <span>
-              {new Date(props.createdDate).toLocaleString('en-GB',
-              {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-              })}
-            </span>
-          </Item.Meta>
-          <Item.Extra>
-            <Labels labels={props.labels} />
-          </Item.Extra>
-        </Item.Content>
-      </Item>
-    }
+
+          <Labels labels={props.labels} /> */}
+          
+        </ListItem>
+      }
+      <Divider />
     </>
   )
 }

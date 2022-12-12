@@ -47,7 +47,6 @@ class LinkForm extends Component {
     if (!link.url) errors.url = 'Url is required'
     if (link.url && !isURL(link.url))
       errors.url = "This doesn't look like a Url :("
-
     return errors
   }
 

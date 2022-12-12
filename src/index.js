@@ -1,6 +1,15 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
 import 'semantic-ui-css/semantic.min.css'
 import App from './App'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+import { createRoot } from 'react-dom/client'
+import { StrictMode } from 'react'
+
+const container = document.getElementById('root')
+const root = createRoot(container)
+
+root.render(
+    <StrictMode>
+        <App />
+    </StrictMode>
+
+)
