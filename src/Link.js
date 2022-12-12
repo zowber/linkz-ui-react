@@ -1,24 +1,28 @@
-import { useState } from 'react'
+import { useState } from "react"
 
-import { Item } from 'semantic-ui-react'
-import { Button, Divider, IconButton, ListItem, ListItemText } from '@mui/material'
-import { Edit as EditIcon } from '@mui/icons-material'
+import { Item } from "semantic-ui-react"
+import {
+  Button,
+  Divider,
+  IconButton,
+  ListItem,
+  ListItemText
+} from "@mui/material"
+import { Edit as EditIcon } from "@mui/icons-material"
 
+import isURL from "validator/lib/isURL"
 
-import isURL from 'validator/lib/isURL'
-
-import Labels from './Labels'
-import LinkForm from './LinkForm'
+import Labels from "./Labels"
+import LinkForm from "./LinkForm"
 
 export default function Link(props) {
-
   const [isEditing, setIsEditing] = useState(false)
 
   const handleDelete = () => {
     props.onDeleteLink(props.id)
   }
 
-  const handleSaveLink = link => {
+  const handleSaveLink = (link) => {
     props.onSaveLink(link)
     closeEditForm()
   }
@@ -31,9 +35,9 @@ export default function Link(props) {
     setIsEditing(false)
   }
 
-  const urlToHost = url => {
+  const urlToHost = (url) => {
     if (isURL(url)) {
-      return (new URL(url).host.replace('www.', ''))
+      return new URL(url).host.replace("www.", "")
     } else {
       return url
     }
@@ -41,7 +45,7 @@ export default function Link(props) {
 
   return (
     <>
-      {isEditing ?
+      {isEditing ? (
         <Item>
           <Item.Content>
             <Button onClick={closeEditForm}>Close</Button>
@@ -51,26 +55,28 @@ export default function Link(props) {
               name={props.name}
               url={props.url}
               labels={props.labels}
-              saveButtonText="Update link"
+              saveButtonText='Update link'
             />
           </Item.Content>
         </Item>
-        :
+      ) : (
         <ListItem
           secondaryAction={
-            <IconButton edge="end" aria-label="edit">
+            <IconButton edge='end' aria-label='edit'>
               <EditIcon />
             </IconButton>
           }
         >
           <ListItemText
             primary={`${props.name}`}
-            secondary={`${urlToHost(props.url)} - ${new Date(props.createdDate).toLocaleString('en-GB',
-              {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-              })}`} />
+            secondary={`${urlToHost(props.url)} - ${new Date(
+              props.createdDate
+            ).toLocaleString("en-GB", {
+              year: "numeric",
+              month: "short",
+              day: "numeric"
+            })}`}
+          />
 
           {/*       
           
@@ -82,9 +88,8 @@ export default function Link(props) {
           </Button>
 
           <Labels labels={props.labels} /> */}
-          
         </ListItem>
-      }
+      )}
       <Divider />
     </>
   )

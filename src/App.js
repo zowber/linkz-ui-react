@@ -1,48 +1,65 @@
-import { useState, useEffect } from 'react'
-import { Input } from 'semantic-ui-react'
+import { useState, useEffect, useMemo } from 'react'
 import {
   AppBar,
   Box,
   Divider,
+  Fab,
   List,
-  Toolbar, 
+  Toolbar,
   Typography,
   IconButton,
-  InputBase } from '@mui/material'
+  TextField,
+} from '@mui/material'
 import {
+  Add as AddIcon,
   Menu as MenuIcon,
-  Search as SearchIcon } from '@mui/icons-material'
-
-import Link from './Link'
+  Search as SearchIcon,
+} from '@mui/icons-material'
+import Linkz from './Linkz'
 import LinkForm from './LinkForm'
-
 import * as API from './data'
 
 export default function App(props) {
+  const fabStyle = {
+    margin: 0,
+    top: 'auto',
+    right: 20,
+    bottom: 20,
+    left: 'auto',
+    position: 'fixed',
+  }
 
   const [linkz, setLinkz] = useState([])
   const [filter, setFilter] = useState('')
 
+  const filteredSortedLinkz = useMemo(() => {
+    return linkz
+      .filter((link) => {
+        return link.name.toLowerCase().includes(filter.toLowerCase())
+      })
+      .sort((a, b) => new Date(b.Created_date) - new Date(a.Created_date))
+  }, [linkz, filter])
+
   useEffect(() => {
-    API.getLinkzFromServer(res => {
+    API.getLinkzFromServer((res) => {
       setLinkz(res)
     })
   }, [])
 
-  const handleAddLink = link => {
-    API.addLink(link, res => {
-      setLinkz(linkz.concat(res))
+  const handleAddLink = (link) => {
+    API.addLink(link, (res) => {
+      setLinkz({ ...link })
     })
   }
 
-  const handleUpdateLink = link => {
-    API.updateLink(link, res => {
-      setLinkz(linkz.map(el => el._id === res._id ? res : el))
+  const handleSaveLink = (link) => {
+    API.updateLink(link, (res) => {
+      setLinkz(linkz.map((el) => (el._id === res._id ? res : el)))
     })
   }
 
-  const handleDeleteLink = linkId => {
-    API.deleteLinkFromServer(linkId, res => {
+  const handleDeleteLink = (linkId) => {
+    API.deleteLinkFromServer(linkId, (res) => {
       setLinkz(res)
     })
   }
@@ -50,62 +67,54 @@ export default function App(props) {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar position='static'>
           <Toolbar>
             <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ mr: 2 }}
-            >
+              size='large'
+              edge='start'
+              color='inherit'
+              aria-label='open drawer'
+              sx={{ mr: 2 }}>
               <MenuIcon />
             </IconButton>
             <Typography
-              variant="h6"
+              variant='h6'
               noWrap
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-            >
+              component='div'
+              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
               Linkz
             </Typography>
           </Toolbar>
         </AppBar>
+        <LinkForm
+          onSaveLink={handleAddLink}
+          saveButtonText='Save'
+        />
+        <TextField
+          placeholder='Search'
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        />
+        <List>
+          <Divider />
+          {filteredSortedLinkz ? (
+            <Linkz
+              linkz={filteredSortedLinkz}
+              onSaveLink={handleSaveLink}
+              onDeleteLink={handleDeleteLink}
+            />
+          ) : (
+            'No linkz.'
+          )}
+        </List>
+        {linkz.length} links
+        <Fab
+          style={fabStyle}
+          color='primary'
+          aria-label='add'>
+          <AddIcon />
+        </Fab>
       </Box>
-      {linkz.length} links
-
-      <LinkForm onSaveLink={handleAddLink} saveButtonText="Save" />
-
-      <Input
-        icon="search"
-        transparent
-        placeholder="Search"
-        onChange={e => setFilter(e.target.value)}
-      />
-
-      <List>
-        <Divider />
-          {linkz ?
-            linkz
-              .filter(link => link.name.toLowerCase().includes(filter.toLowerCase()))
-              .sort((a, b) => new Date(b.Created_date) - new Date(a.Created_date))
-              .map(link => {
-                return (
-                  <Link
-                    key={link._id}
-                    id={link._id}
-                    name={link.name}
-                    url={link.url}
-                    labels={link.labels}
-                    createdDate={link.Created_date}
-                    onSaveLink={handleUpdateLink}
-                    onDeleteLink={handleDeleteLink}
-                  />
-                )
-              })
-            : null
-          }
-          </List>
-  </>
+    </>
   )
 }
