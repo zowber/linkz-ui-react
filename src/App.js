@@ -1,10 +1,12 @@
-import { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import {
   AppBar,
   Box,
   Divider,
   Fab,
   List,
+  Modal,
+  Paper,
   Toolbar,
   Typography,
   IconButton,
@@ -12,21 +14,32 @@ import {
 } from '@mui/material'
 import {
   Add as AddIcon,
+  Close as CloseIcon,
   Menu as MenuIcon,
-  Search as SearchIcon,
 } from '@mui/icons-material'
 import Linkz from './Linkz'
 import LinkForm from './LinkForm'
 import * as API from './data'
+import { IconGroup } from 'semantic-ui-react'
 
 export default function App(props) {
   const fabStyle = {
     margin: 0,
     top: 'auto',
-    right: 20,
+    right: 14,
     bottom: 20,
     left: 'auto',
     position: 'fixed',
+  }
+
+  const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 320,
+    boxShadow: 24,
+    p: 4,
   }
 
   const [linkz, setLinkz] = useState([])
@@ -64,6 +77,10 @@ export default function App(props) {
     })
   }
 
+  const [open, setOpen] = React.useState(false)
+  const handleOpenModal = () => setOpen(true)
+  const handleCloseModal = () => setOpen(false)
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -86,10 +103,7 @@ export default function App(props) {
             </Typography>
           </Toolbar>
         </AppBar>
-        <LinkForm
-          onSaveLink={handleAddLink}
-          saveButtonText='Save'
-        />
+
         <TextField
           placeholder='Search'
           value={filter}
@@ -107,14 +121,41 @@ export default function App(props) {
             'No linkz.'
           )}
         </List>
-        {linkz.length} links
         <Fab
           style={fabStyle}
           color='primary'
-          aria-label='add'>
+          aria-label='add'
+          onClick={handleOpenModal}>
           <AddIcon />
         </Fab>
       </Box>
+
+      <Modal
+        open={open}
+        onClose={handleCloseModal}>
+        <Paper style={modalStyle}>
+          <Box
+            sx={{ m: 2 }}
+            display='flex'
+            justifyContent='space-between'
+            alignItems='center'>
+            <Typography
+              id='modal-modal-title'
+              variant='h6'
+              component='h2'>
+              Add new link
+            </Typography>
+            <IconButton onClick={handleCloseModal}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          <Divider />
+          <LinkForm
+            onSaveLink={handleAddLink}
+            saveButtonText='Save'
+          />
+        </Paper>
+      </Modal>
     </>
   )
 }

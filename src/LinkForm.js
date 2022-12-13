@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Form } from 'semantic-ui-react'
+import { Box, Button, Divider, TextField } from '@mui/material'
 import isURL from 'validator/lib/isURL'
 import LabelsInput from './LabelsInput'
 import Labels from './Labels'
@@ -72,22 +73,26 @@ class LinkForm extends Component {
     return (
       <Form
         error={this.state.hasErrors}
-        onSubmit={this.handleSubmit}
-      >
-        <Form.Input
-          fluid
-          type='text'
+        onSubmit={this.handleSubmit}>
+        <Box sx={{m: 2}}>
+        <TextField
           name='url'
           value={link.url}
+          label='URL'
+          variant='outlined'
           placeholder='URL'
+          margin='normal'
+          fullWidth
           onChange={this.handleChange}
         />
-        <Form.Input
-          fluid
-          type='text'
+        <TextField
           name='name'
           value={link.name}
+          label='Name'
+          variant='outlined'
           placeholder='Name'
+          margin='normal'
+          fullWidth
           onChange={this.handleChange}
         />
         <LabelsInput
@@ -98,7 +103,20 @@ class LinkForm extends Component {
           labels={link.labels}
           onRemove={this.handleRemoveLabel}
         />
-        <Form.Button primary>{this.props.saveButtonText}</Form.Button>
+        </Box>
+        <Divider />
+        <Box
+          sx={{m: 2}}
+          display='flex'
+          justifyContent='flex-end'
+          alignItems='flex-end'>
+          <Button
+            variant='contained'
+            size='large'
+            disableElevation>
+            {this.props.saveButtonText}
+          </Button>
+        </Box>
       </Form>
     )
   }

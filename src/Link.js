@@ -1,19 +1,19 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-import { Item } from "semantic-ui-react"
+import { Item } from 'semantic-ui-react'
 import {
   Button,
   Divider,
   IconButton,
   ListItem,
-  ListItemText
-} from "@mui/material"
-import { Edit as EditIcon } from "@mui/icons-material"
+  ListItemText,
+} from '@mui/material'
+import { OpenInBrowser as OpenIcon } from '@mui/icons-material'
 
-import isURL from "validator/lib/isURL"
+import isURL from 'validator/lib/isURL'
 
-import Labels from "./Labels"
-import LinkForm from "./LinkForm"
+import Labels from './Labels'
+import LinkForm from './LinkForm'
 
 export default function Link(props) {
   const [isEditing, setIsEditing] = useState(false)
@@ -37,7 +37,7 @@ export default function Link(props) {
 
   const urlToHost = (url) => {
     if (isURL(url)) {
-      return new URL(url).host.replace("www.", "")
+      return new URL(url).host.replace('www.', '')
     } else {
       return url
     }
@@ -62,19 +62,21 @@ export default function Link(props) {
       ) : (
         <ListItem
           secondaryAction={
-            <IconButton edge='end' aria-label='edit'>
-              <EditIcon />
+            <IconButton
+              edge='end'
+              href={props.url}
+              aria-label='edit'>
+              <OpenIcon />
             </IconButton>
-          }
-        >
+          }>
           <ListItemText
             primary={`${props.name}`}
             secondary={`${urlToHost(props.url)} - ${new Date(
               props.createdDate
-            ).toLocaleString("en-GB", {
-              year: "numeric",
-              month: "short",
-              day: "numeric"
+            ).toLocaleString('en-GB', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
             })}`}
           />
 

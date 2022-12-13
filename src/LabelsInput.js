@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
-import { Form, Button } from 'semantic-ui-react'
+import {
+  Button,
+  TextField,
+} from '@mui/material'
 
 class LabelsInput extends Component {
   state = {
@@ -25,13 +28,12 @@ class LabelsInput extends Component {
     const labelToAdd = this.state.labelToAdd
 
     return (
-      <Form.Input
-        fluid
-        type="text"
-        name="label"
-        placeholder="Tags"
+      <TextField
+        label='Tag'
+        margin='normal'
+        fullWidth
         value={labelToAdd}
-        action={<Button onClick={this.handleAddLabelClick}>Add tag</Button>}
+        action={<Button onClick={this.handleAddLabelClick}>Add label</Button>}
         onChange={this.handleChange}
       />
     )
