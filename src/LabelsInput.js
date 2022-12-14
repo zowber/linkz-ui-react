@@ -29,7 +29,7 @@ class LabelsInput extends Component {
 
     return (
       <TextField
-        label='Tag'
+        label='Labels'
         margin='normal'
         fullWidth
         value={labelToAdd}

@@ -154,11 +154,12 @@ export default function App(props) {
             sx={{ m: 2 }}
             display='flex'
             justifyContent='space-between'
-            alignItems='center'>
+            alignItems='baseline'>
             <Typography
               id='modal-modal-title'
               variant='h6'
-              component='h2'>
+              component='h2'
+              sx={{ paddingTop: '6px' }}>
               Add new link
             </Typography>
             <IconButton onClick={handleCloseAddModal}>
@@ -184,7 +185,8 @@ export default function App(props) {
             <Typography
               id='modal-modal-title'
               variant='h6'
-              component='h2'>
+              component='p'
+              sx={{ paddingTop: '6px' }}>
               Edit link
             </Typography>
             <IconButton onClick={handleCloseEditModal}>
