@@ -17,6 +17,7 @@ export default function Linkz(props) {
             url={link.url}
             labels={link.labels}
             createdDate={link.Created_date}
+            onOpenEdit={props.onOpenEdit}
             onDeleteLink={props.onDeleteLink}
             onSaveLink={props.onSaveLink}
           />

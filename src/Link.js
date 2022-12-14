@@ -27,6 +27,11 @@ export default function Link(props) {
     }
   }
 
+  const handleOpenEdit = () => {
+    props.onOpenEdit(props.name, props.url, props.labels)
+    handleClose()
+  }
+
   const handleDelete = () => {
     props.onDeleteLink(props.id)
     handleClose()
@@ -71,7 +76,7 @@ export default function Link(props) {
                   href={props.url}>
                   Open link
                 </MenuItem>
-                <MenuItem>Edit</MenuItem>
+                <MenuItem onClick={handleOpenEdit}>Edit</MenuItem>
                 <Divider />
                 <MenuItem onClick={handleDelete}>Delete</MenuItem>
               </Menu>
@@ -89,16 +94,7 @@ export default function Link(props) {
           })}`}
         />
 
-        {/*       
-          
-          <Button icon floated="right" onClick={openEditForm}>
-            <i className="edit icon" />
-          </Button>
-          <Button icon floated="right" onClick={handleDelete}>
-            <i className="trash icon" />
-          </Button>
-
-          <Labels labels={props.labels} /> */}
+        {/* <Labels labels={props.labels} /> */}
       </ListItem>
       <Divider />
     </>

@@ -40,6 +40,7 @@ export default function App(props) {
 
   const [linkz, setLinkz] = useState([])
   const [filter, setFilter] = useState('')
+  const [editData, setEditData] = useState({name: '', url: '', labels: []})
 
   const filteredSortedLinkz = useMemo(() => {
     return linkz
@@ -59,7 +60,7 @@ export default function App(props) {
     console.log('handle add link')
     API.addLink(link, (res) => {
       setLinkz(linkz.concat(res))
-      handleCloseModal()
+      handleCloseAddModal()
     })
   }
 
@@ -89,9 +90,17 @@ export default function App(props) {
     setIsEditing(false)
   }
 
-  const [open, setOpen] = React.useState(false)
-  const handleOpenModal = () => setOpen(true)
-  const handleCloseModal = () => setOpen(false)
+  const [openAdd, setOpenAdd] = React.useState(false)
+  const handleOpenAddModal = () => setOpenAdd(true)
+  const handleCloseAddModal = () => setOpenAdd(false)
+
+  const [openEdit, setOpenEdit] = React.useState(false)
+  const handleOpenEditModal = (name, url, labels) => {
+    setEditData( { name: name, url: url, labels: labels } )
+    setOpenEdit(true)
+  }
+  const handleCloseEditModal = () => setOpenEdit(false)
+
 
   return (
     <>
@@ -119,6 +128,7 @@ export default function App(props) {
           <List sx={{ paddingTop: 0 }}>
             <Linkz
               linkz={filteredSortedLinkz}
+              onOpenEdit={handleOpenEditModal}
               onSaveLink={handleSaveLink}
               onDeleteLink={handleDeleteLink}
             />
@@ -131,14 +141,14 @@ export default function App(props) {
           style={fabStyle}
           color='primary'
           aria-label='add'
-          onClick={handleOpenModal}>
+          onClick={handleOpenAddModal}>
           <AddIcon />
         </Fab>
       </Box>
 
       <Modal
-        open={open}
-        onClose={handleCloseModal}>
+        open={openAdd}
+        onClose={handleCloseAddModal}>
         <Paper style={modalStyle}>
           <Box
             sx={{ m: 2 }}
@@ -151,7 +161,7 @@ export default function App(props) {
               component='h2'>
               Add new link
             </Typography>
-            <IconButton onClick={handleCloseModal}>
+            <IconButton onClick={handleCloseAddModal}>
               <CloseIcon />
             </IconButton>
           </Box>
@@ -162,16 +172,35 @@ export default function App(props) {
           />
         </Paper>
       </Modal>
-      <Modal open={false}>
-        <Button onClick={closeEditForm}>Close</Button>
-        {/* <LinkForm
-          onSaveLink={handleSaveLink}
-          linkId={props.id}
-          name={props.name}
-          url={props.url}
-          labels={props.labels}
-          saveButtonText='Update link'
-        /> */}
+
+      <Modal open={openEdit}
+        onClose={handleCloseEditModal}>
+        <Paper style={modalStyle}>
+          <Box
+            sx={{ m: 2 }}
+            display='flex'
+            justifyContent='space-between'
+            alignItems='center'>
+            <Typography
+              id='modal-modal-title'
+              variant='h6'
+              component='h2'>
+              Edit link
+            </Typography>
+            <IconButton onClick={handleCloseEditModal}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          <Divider />
+
+          <LinkForm
+            name={editData.name}
+            url={editData.url}
+            labels={editData.labels}
+            onSaveLink={handleSaveLink}
+            saveButtonText='Update link'
+          />
+        </Paper>
       </Modal>
     </>
   )
