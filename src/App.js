@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import {
   AppBar,
   Box,
+  Button,
   Divider,
   Fab,
   List,
@@ -10,17 +11,12 @@ import {
   Toolbar,
   Typography,
   IconButton,
-  TextField,
+  InputBase,
 } from '@mui/material'
-import {
-  Add as AddIcon,
-  Close as CloseIcon,
-  Menu as MenuIcon,
-} from '@mui/icons-material'
+import { Add as AddIcon, Close as CloseIcon } from '@mui/icons-material'
 import Linkz from './Linkz'
 import LinkForm from './LinkForm'
 import * as API from './data'
-import { IconGroup } from 'semantic-ui-react'
 
 export default function App(props) {
   const fabStyle = {
@@ -60,8 +56,10 @@ export default function App(props) {
   }, [])
 
   const handleAddLink = (link) => {
+    console.log('handle add link')
     API.addLink(link, (res) => {
-      setLinkz({ ...link })
+      setLinkz(linkz.concat(res))
+      handleCloseModal()
     })
   }
 
@@ -73,8 +71,22 @@ export default function App(props) {
 
   const handleDeleteLink = (linkId) => {
     API.deleteLinkFromServer(linkId, (res) => {
-      setLinkz(res)
+      console.log(res)
+      //setLinkz(res)
     })
+  }
+
+  // const handleSaveLink = (link) => {
+  //   props.onSaveLink(link)
+  //   closeEditForm()
+  // }
+
+  const openEditForm = () => {
+    setIsEditing(true)
+  }
+
+  const closeEditForm = () => {
+    setIsEditing(false)
   }
 
   const [open, setOpen] = React.useState(false)
@@ -84,16 +96,8 @@ export default function App(props) {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position='static'>
+        <AppBar position='sticky'>
           <Toolbar>
-            <IconButton
-              size='large'
-              edge='start'
-              color='inherit'
-              aria-label='open drawer'
-              sx={{ mr: 2 }}>
-              <MenuIcon />
-            </IconButton>
             <Typography
               variant='h6'
               noWrap
@@ -101,26 +105,28 @@ export default function App(props) {
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
               Linkz
             </Typography>
+            <Box sx={{ p: 0, px: 1, backgroundColor: 'white' }}>
+              <InputBase
+                placeholder='Search'
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+              />
+            </Box>
           </Toolbar>
         </AppBar>
 
-        <TextField
-          placeholder='Search'
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        />
-        <List>
-          <Divider />
-          {filteredSortedLinkz ? (
+        {filteredSortedLinkz ? (
+          <List sx={{ paddingTop: 0 }}>
             <Linkz
               linkz={filteredSortedLinkz}
               onSaveLink={handleSaveLink}
               onDeleteLink={handleDeleteLink}
             />
-          ) : (
-            'No linkz.'
-          )}
-        </List>
+          </List>
+        ) : (
+          'No linkz.'
+        )}
+
         <Fab
           style={fabStyle}
           color='primary'
@@ -155,6 +161,17 @@ export default function App(props) {
             saveButtonText='Save'
           />
         </Paper>
+      </Modal>
+      <Modal open={false}>
+        <Button onClick={closeEditForm}>Close</Button>
+        {/* <LinkForm
+          onSaveLink={handleSaveLink}
+          linkId={props.id}
+          name={props.name}
+          url={props.url}
+          labels={props.labels}
+          saveButtonText='Update link'
+        /> */}
       </Modal>
     </>
   )

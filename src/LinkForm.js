@@ -74,43 +74,44 @@ class LinkForm extends Component {
       <Form
         error={this.state.hasErrors}
         onSubmit={this.handleSubmit}>
-        <Box sx={{m: 2}}>
-        <TextField
-          name='url'
-          value={link.url}
-          label='URL'
-          variant='outlined'
-          placeholder='URL'
-          margin='normal'
-          fullWidth
-          onChange={this.handleChange}
-        />
-        <TextField
-          name='name'
-          value={link.name}
-          label='Name'
-          variant='outlined'
-          placeholder='Name'
-          margin='normal'
-          fullWidth
-          onChange={this.handleChange}
-        />
-        <LabelsInput
-          labels={link.labels}
-          onAddLabel={this.handleAddLabel}
-        />
-        <Labels
-          labels={link.labels}
-          onRemove={this.handleRemoveLabel}
-        />
+        <Box sx={{ m: 2, marginTop: 1 }}>
+          <TextField
+            name='url'
+            value={link.url}
+            label='URL'
+            variant='outlined'
+            placeholder='URL'
+            margin='normal'
+            fullWidth
+            onChange={this.handleChange}
+          />
+          <TextField
+            name='name'
+            value={link.name}
+            label='Name'
+            variant='outlined'
+            placeholder='Name'
+            margin='normal'
+            fullWidth
+            onChange={this.handleChange}
+          />
+          <LabelsInput
+            labels={link.labels}
+            onAddLabel={this.handleAddLabel}
+          />
+          <Labels
+            labels={link.labels}
+            onRemove={this.handleRemoveLabel}
+          />
         </Box>
         <Divider />
         <Box
-          sx={{m: 2}}
+          sx={{ m: 2 }}
           display='flex'
           justifyContent='flex-end'
           alignItems='flex-end'>
           <Button
+            type='submit'
             variant='contained'
             size='large'
             disableElevation>

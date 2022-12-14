@@ -1,39 +1,23 @@
 import { useState } from 'react'
-
-import { Item } from 'semantic-ui-react'
 import {
   Button,
   Divider,
   IconButton,
   ListItem,
   ListItemText,
+  Menu,
+  MenuItem,
+  MenuList,
+  Paper,
 } from '@mui/material'
-import { OpenInBrowser as OpenIcon } from '@mui/icons-material'
-
+import { MoreVert as MoreVertIcon } from '@mui/icons-material'
 import isURL from 'validator/lib/isURL'
-
 import Labels from './Labels'
 import LinkForm from './LinkForm'
 
 export default function Link(props) {
   const [isEditing, setIsEditing] = useState(false)
-
-  const handleDelete = () => {
-    props.onDeleteLink(props.id)
-  }
-
-  const handleSaveLink = (link) => {
-    props.onSaveLink(link)
-    closeEditForm()
-  }
-
-  const openEditForm = () => {
-    setIsEditing(true)
-  }
-
-  const closeEditForm = () => {
-    setIsEditing(false)
-  }
+  const [anchorEl, setAnchorEl] = useState(null)
 
   const urlToHost = (url) => {
     if (isURL(url)) {
@@ -43,44 +27,69 @@ export default function Link(props) {
     }
   }
 
+  const handleDelete = () => {
+    props.onDeleteLink(props.id)
+    handleClose()
+  }
+
+  const open = Boolean(anchorEl)
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
   return (
     <>
-      {isEditing ? (
-        <Item>
-          <Item.Content>
-            <Button onClick={closeEditForm}>Close</Button>
-            <LinkForm
-              onSaveLink={handleSaveLink}
-              linkId={props.id}
-              name={props.name}
-              url={props.url}
-              labels={props.labels}
-              saveButtonText='Update link'
-            />
-          </Item.Content>
-        </Item>
-      ) : (
-        <ListItem
-          secondaryAction={
+      <ListItem
+        secondaryAction={
+          <>
             <IconButton
               edge='end'
-              href={props.url}
+              onClick={handleClick}
               aria-label='edit'>
-              <OpenIcon />
+              <MoreVertIcon />
             </IconButton>
-          }>
-          <ListItemText
-            primary={`${props.name}`}
-            secondary={`${urlToHost(props.url)} - ${new Date(
-              props.createdDate
-            ).toLocaleString('en-GB', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-            })}`}
-          />
+            <Paper>
+              <Menu
+                open={open}
+                onClose={handleClose}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}>
+                <MenuItem
+                  component='a'
+                  href={props.url}>
+                  Open link
+                </MenuItem>
+                <MenuItem>Edit</MenuItem>
+                <Divider />
+                <MenuItem onClick={handleDelete}>Delete</MenuItem>
+              </Menu>
+            </Paper>
+          </>
+        }>
+        <ListItemText
+          primary={`${props.name}`}
+          secondary={`${urlToHost(props.url)} - ${new Date(
+            props.createdDate
+          ).toLocaleString('en-GB', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          })}`}
+        />
 
-          {/*       
+        {/*       
           
           <Button icon floated="right" onClick={openEditForm}>
             <i className="edit icon" />
@@ -90,8 +99,7 @@ export default function Link(props) {
           </Button>
 
           <Labels labels={props.labels} /> */}
-        </ListItem>
-      )}
+      </ListItem>
       <Divider />
     </>
   )
