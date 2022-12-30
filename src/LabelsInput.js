@@ -1,43 +1,33 @@
-import React, { Component } from 'react'
-import {
-  Button,
-  TextField,
-} from '@mui/material'
+import React, { useState } from 'react'
+import { Button, TextField } from '@mui/material'
 
-class LabelsInput extends Component {
-  state = {
-    labelToAdd: ''
+export default function LabelsInput(props) {
+  const [labelToAdd, setLabelToAdd] = useState('')
+
+  const handleChange = (e) => {
+    console.log(e.target.value)
+    setLabelToAdd(e.target.value)
   }
 
-  handleChange = (e, label) => {
-    this.setState({
-      labelToAdd: label.value
-    })
-  }
-
-  handleAddLabelClick = e => {
+  const handleAddLabelClick = (e) => {
     e.preventDefault()
-    this.props.onAddLabel({
-      id: this.props.labels.length + 1,
-      name: this.state.labelToAdd
+    props.onAddLabel({
+      id: props.labels.length + 1,
+      name: labelToAdd,
     })
-    this.setState({ labelToAdd: '' })
+    setLabelToAdd('')
   }
 
-  render() {
-    const labelToAdd = this.state.labelToAdd
-
-    return (
-      <TextField
-        label='Labels'
-        margin='normal'
-        fullWidth
-        value={labelToAdd}
-        action={<Button onClick={this.handleAddLabelClick}>Add label</Button>}
-        onChange={this.handleChange}
-      />
-    )
-  }
+  return (
+    <TextField
+      label='Label'
+      margin='normal'
+      fullWidth
+      value={labelToAdd}
+      InputProps={{
+        endAdornment: <Button onClick={handleAddLabelClick}>Add</Button>,
+      }}
+      onChange={handleChange}
+    />
+  )
 }
-
-export default LabelsInput

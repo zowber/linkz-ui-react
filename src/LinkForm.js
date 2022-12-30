@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Form } from 'semantic-ui-react'
 import { Box, Button, Divider, TextField } from '@mui/material'
 import isURL from 'validator/lib/isURL'
 import LabelsInput from './LabelsInput'
@@ -71,9 +70,10 @@ class LinkForm extends Component {
   render() {
     const link = this.state.link
     return (
-      <Form
+      <form
         error={this.state.hasErrors}
-        onSubmit={this.handleSubmit}>
+        onSubmit={this.handleSubmit}
+      >
         <Box sx={{ m: 2, marginTop: 1 }}>
           <TextField
             name='url'
@@ -109,16 +109,18 @@ class LinkForm extends Component {
           sx={{ m: 2 }}
           display='flex'
           justifyContent='flex-end'
-          alignItems='flex-end'>
+          alignItems='flex-end'
+        >
           <Button
             type='submit'
             variant='contained'
             size='large'
-            disableElevation>
+            disableElevation
+          >
             {this.props.saveButtonText}
           </Button>
         </Box>
-      </Form>
+      </form>
     )
   }
 }

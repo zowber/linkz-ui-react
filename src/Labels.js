@@ -1,33 +1,29 @@
 import React from 'react'
-import { Label } from 'semantic-ui-react'
+import { Chip } from '@mui/material'
 
-class Labels extends React.Component {
-  handleOnRemove = (e, label) => {
-    this.props.onRemove(label.id)
+export default function Labels(props) {
+  
+  const handleDelete = (e, label) => {
+    props.onRemove(label.id)
   }
 
-  render() {
-    if (this.props.labels.length === 0) return null
+  const labels = props.labels.map((label) => (
+    <Chip
+      key={label.id}
+      content={label.name}
+    />
+  ))
 
-    const labels = this.props.labels.map(label => (
-      <Label key={label.id} content={label.name} />
-    ))
+  const removableLabels = props.labels.map((label) => (
+    <Chip
+      key={label.id}
+      id={label.id}
+      label='Clickable Deletable'
+      variant='outlined'
+      onClick={handleClick}
+      onDelete={handleDelete}
+    />
+  ))
 
-    const removableLabels = this.props.labels.map(label => (
-      <Label
-        key={label.id}
-        id={label.id}
-        onRemove={this.handleOnRemove}
-        content={label.name}
-      />
-    ))
-
-    return (
-      <Label.Group size="small">
-        {this.props.onRemove ? removableLabels : labels}
-      </Label.Group>
-    )
-  }
+  return <>{props.onRemove ? removableLabels : labels}</>
 }
-
-export default Labels
